@@ -1,0 +1,23 @@
+18.205.247.241#!/bin/bash
+sudo yum update -y
+cd /home/
+sudo su
+setenforce 0
+timedatectl set-timezone  Asia/Kolkata
+sudo yum install git -y
+sudo yum install -y java-1.8.0-openjdk-devel
+cd /home/ 
+sudo yum install mysql -y
+sudo yum install maven -y
+sudo git clone https://github.com/tamilsaran/tomcat.git
+sudo git clone https://github.com/tamilsaran/myjdbc.git
+sudo yum install tomcat tomcat-webapps tomcat-admin-webapps -y
+cd /home/myjdbc
+sudo mvn clean install
+sudo rm -rf /usr/share/tomcat/conf/tomcat-users.xml
+sudo mv /home/tomcat/tomcat-users.xml /usr/share/tomcat/conf/tomcat-users.xml
+sudo mv /home/myjdbc/target/*.war /var/lib/tomcat/webapps/myjdbc.war
+sudo rm -rf /home/tomcat
+sudo rm -rf /home/myjdbc
+mysql -h puppetlabs-aws-mysql.crqjukbg6nlz.us-east-1.rds.amazonaws.com -u root -pzippyops345 -D java -e "create table registration (name varchar(30),email varchar(30) primary key,gender varchar(7),password varchar(30))"
+sudo service tomcat restart

@@ -1,0 +1,14 @@
+#!/bin/bash
+sudo yum update -y
+sudo su
+setenforce 0
+timedatectl set-timezone  Asia/Kolkata
+sudo yum install git -y
+cd /home/ 
+sudo git clone https://github.com/tamilsaran/tomcat.git
+sudo yum install -y java-1.8.0-openjdk-devel
+sudo yum install -y nginx*
+sudo rm -rf /etc/nginx/nginx.conf
+sudo mv /home/tomcat/nginx.conf /etc/nginx/nginx.conf
+sudo rm -rf /home/tomcat
+sudo service nginx start
